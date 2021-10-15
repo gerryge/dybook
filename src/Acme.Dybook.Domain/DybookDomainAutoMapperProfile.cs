@@ -1,7 +1,6 @@
 ﻿using Acme.Dybook.Users;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Volo.Abp.Users;
+using Volo.Abp.Identity;
 
 namespace Dyabp.DyProjectName
 {
@@ -13,7 +12,6 @@ namespace Dyabp.DyProjectName
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
             CreateMap<IdentityUser, DyUserEto>();
-            //CreateMap<UserEto, DyUserEto>().ReverseMap();
         }
     }
 }

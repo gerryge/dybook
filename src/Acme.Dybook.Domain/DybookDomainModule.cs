@@ -15,6 +15,8 @@ using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.Domain.Entities.Events.Distributed;
 using Acme.Dybook.Users;
+using Dyabp.DyProjectName;
+using Volo.Abp.AutoMapper;
 
 namespace Acme.Dybook
 {
@@ -36,6 +38,10 @@ namespace Acme.Dybook
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             context.Services.AddAutoMapperObjectMapper<DybookDomainModule>();
+            Configure<AbpAutoMapperOptions>(options =>
+            {
+                options.AddProfile<DybookDomainAutoMapperProfile>(validate: false);
+            });
             Configure<AbpDistributedEntityEventOptions>(options =>
             {
                 options.EtoMappings.Add<IdentityUser, DyUserEto>(typeof(DybookDomainModule));
