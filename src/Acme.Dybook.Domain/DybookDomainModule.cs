@@ -13,6 +13,8 @@ using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.IdentityServer;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
+using Volo.Abp.Domain.Entities.Events.Distributed;
+using Acme.Dybook.Users;
 
 namespace Acme.Dybook
 {
@@ -33,6 +35,12 @@ namespace Acme.Dybook
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            context.Services.AddAutoMapperObjectMapper<DybookDomainModule>();
+            Configure<AbpDistributedEntityEventOptions>(options =>
+            {
+                options.EtoMappings.Add<IdentityUser, DyUserEto>(typeof(DybookDomainModule));
+            });
+
             Configure<AbpMultiTenancyOptions>(options =>
             {
                 options.IsEnabled = MultiTenancyConsts.IsEnabled;
