@@ -1,5 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Acme.Dybook.Localization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Identity;
+using Volo.Abp.Localization;
 using Volo.Abp.ObjectExtending;
 using Volo.Abp.Threading;
 
@@ -67,6 +71,53 @@ namespace Acme.Dybook
              * See the documentation for more:
              * https://docs.abp.io/en/abp/latest/Module-Entity-Extensions
              */
+
+            ObjectExtensionManager.Instance.Modules()
+                .ConfigureIdentity(identity =>
+                {
+                    identity.ConfigureUser(user =>
+                    {
+                        user.AddOrUpdateProperty<string>( //property type: string
+                            "SocialSecurityNumber", //property name
+                            property =>
+                            {
+                                //validation rules
+                                property.Attributes.Add(new RequiredAttribute());
+                                property.Attributes.Add(
+                                    new StringLengthAttribute(64)
+                                    {
+                                        MinimumLength = 4
+                                    }
+                                );
+
+                                //...other configurations for this property
+
+                                //Localize using the DisplayName Property
+                                property.DisplayName =
+                            LocalizableString.Create<DybookResource>(
+                                "SocialSecurityNumber"
+                                );
+
+                                //Validation Actions
+                                property.Validators.Add(context =>
+                                {
+                                    if (((string)context.Value).StartsWith("B"))
+                                    {
+                                        var localizer = context.ServiceProvider
+                                            .GetRequiredService<IStringLocalizer<DybookResource>>();
+
+                                        context.ValidationErrors.Add(
+                                            new ValidationResult(
+                                                localizer["SocialSecurityNumberCanNotStartWithB"],
+                                                new[] { "extraProperties.SocialSecurityNumber" }
+                                            )
+                                        );
+                                    }
+                                });
+                            }
+                        );                
+                    });
+                });
         }
     }
 }
