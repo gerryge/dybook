@@ -44,6 +44,7 @@ namespace Acme.Dybook
             });
             Configure<AbpDistributedEntityEventOptions>(options =>
             {
+                options.AutoEventSelectors.Add<IdentityUser>();
                 options.EtoMappings.Add<IdentityUser, DyUserEto>(typeof(DybookDomainModule));
             });
 

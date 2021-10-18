@@ -1,6 +1,7 @@
 ﻿using Acme.Dybook.Users;
 using AutoMapper;
 using Volo.Abp.Identity;
+using Volo.Abp.Users;
 
 namespace Dyabp.DyProjectName
 {
@@ -12,6 +13,7 @@ namespace Dyabp.DyProjectName
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
             CreateMap<IdentityUser, DyUserEto>();
+            CreateMap<UserData, DyUserData>();
         }
     }
 }
