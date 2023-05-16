@@ -1,15 +1,14 @@
 ﻿using Acme.Dybook.Localization;
 using Volo.Abp.AspNetCore.Mvc;
 
-namespace Acme.Dybook.Controllers
+namespace Acme.Dybook.Controllers;
+
+/* Inherit your controllers from this class.
+ */
+public abstract class DybookController : AbpControllerBase
 {
-    /* Inherit your controllers from this class.
-     */
-    public abstract class DybookController : AbpController
+    protected DybookController()
     {
-        protected DybookController()
-        {
-            LocalizationResource = typeof(DybookResource);
-        }
+        LocalizationResource = typeof(DybookResource);
     }
 }

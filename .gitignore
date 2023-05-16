@@ -254,9 +254,12 @@ paket-files/
 # Dybook
 src/Acme.Dybook.Web/Logs/*
 src/Acme.Dybook.Web.Host/Logs/*
-src/Acme.Dybook.IdentityServer/Logs/*
+src/Acme.Dybook.AuthServer/Logs/*
 src/Acme.Dybook.HttpApi.Host/Logs/*
 src/Acme.Dybook.HttpApi.HostWithIds/Logs/*
 src/Acme.Dybook.DbMigrator/Logs/*
 src/Acme.Dybook.Blazor.Server/Logs/*
 src/Acme.Dybook.Blazor.Server.Tiered/Logs/*
+
+# Use abp install-libs to restore.
+**/wwwroot/libs/*

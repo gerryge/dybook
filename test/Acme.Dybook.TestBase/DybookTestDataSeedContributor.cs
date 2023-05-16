@@ -2,15 +2,14 @@
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 
-namespace Acme.Dybook
-{
-    public class DybookTestDataSeedContributor : IDataSeedContributor, ITransientDependency
-    {
-        public Task SeedAsync(DataSeedContext context)
-        {
-            /* Seed additional test data... */
+namespace Acme.Dybook;
 
-            return Task.CompletedTask;
-        }
+public class DybookTestDataSeedContributor : IDataSeedContributor, ITransientDependency
+{
+    public Task SeedAsync(DataSeedContext context)
+    {
+        /* Seed additional test data... */
+
+        return Task.CompletedTask;
     }
 }

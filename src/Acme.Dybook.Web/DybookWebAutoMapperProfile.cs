@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 
-namespace Acme.Dybook.Web
+namespace Acme.Dybook.Web;
+
+public class DybookWebAutoMapperProfile : Profile
 {
-    public class DybookWebAutoMapperProfile : Profile
+    public DybookWebAutoMapperProfile()
     {
-        public DybookWebAutoMapperProfile()
-        {
-            //Define your AutoMapper configuration here for the Web project.
-        }
+        //Define your AutoMapper configuration here for the Web project.
     }
 }

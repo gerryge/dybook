@@ -4,15 +4,14 @@ using System.Text;
 using Acme.Dybook.Localization;
 using Volo.Abp.Application.Services;
 
-namespace Acme.Dybook
+namespace Acme.Dybook;
+
+/* Inherit your application services from this class.
+ */
+public abstract class DybookAppService : ApplicationService
 {
-    /* Inherit your application services from this class.
-     */
-    public abstract class DybookAppService : ApplicationService
+    protected DybookAppService()
     {
-        protected DybookAppService()
-        {
-            LocalizationResource = typeof(DybookResource);
-        }
+        LocalizationResource = typeof(DybookResource);
     }
 }

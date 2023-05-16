@@ -7,26 +7,25 @@ using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 
-namespace Acme.Dybook
+namespace Acme.Dybook;
+
+[DependsOn(
+    typeof(DybookDomainModule),
+    typeof(AbpAccountApplicationModule),
+    typeof(DybookApplicationContractsModule),
+    typeof(AbpIdentityApplicationModule),
+    typeof(AbpPermissionManagementApplicationModule),
+    typeof(AbpTenantManagementApplicationModule),
+    typeof(AbpFeatureManagementApplicationModule),
+    typeof(AbpSettingManagementApplicationModule)
+    )]
+public class DybookApplicationModule : AbpModule
 {
-    [DependsOn(
-        typeof(DybookDomainModule),
-        typeof(AbpAccountApplicationModule),
-        typeof(DybookApplicationContractsModule),
-        typeof(AbpIdentityApplicationModule),
-        typeof(AbpPermissionManagementApplicationModule),
-        typeof(AbpTenantManagementApplicationModule),
-        typeof(AbpFeatureManagementApplicationModule),
-        typeof(AbpSettingManagementApplicationModule)
-        )]
-    public class DybookApplicationModule : AbpModule
+    public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        public override void ConfigureServices(ServiceConfigurationContext context)
+        Configure<AbpAutoMapperOptions>(options =>
         {
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<DybookApplicationModule>();
-            });
-        }
+            options.AddMaps<DybookApplicationModule>();
+        });
     }
 }

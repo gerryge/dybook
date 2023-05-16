@@ -2,15 +2,14 @@
 using Shouldly;
 using Xunit;
 
-namespace Acme.Dybook.Pages
+namespace Acme.Dybook.Pages;
+
+public class Index_Tests : DybookWebTestBase
 {
-    public class Index_Tests : DybookWebTestBase
+    [Fact]
+    public async Task Welcome_Page()
     {
-        [Fact]
-        public async Task Welcome_Page()
-        {
-            var response = await GetResponseAsStringAsync("/");
-            response.ShouldNotBeNull();
-        }
+        var response = await GetResponseAsStringAsync("/");
+        response.ShouldNotBeNull();
     }
 }

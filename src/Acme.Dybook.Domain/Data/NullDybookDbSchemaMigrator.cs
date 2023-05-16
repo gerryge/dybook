@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 
-namespace Acme.Dybook.Data
+namespace Acme.Dybook.Data;
+
+/* This is used if database provider does't define
+ * IDybookDbSchemaMigrator implementation.
+ */
+public class NullDybookDbSchemaMigrator : IDybookDbSchemaMigrator, ITransientDependency
 {
-    /* This is used if database provider does't define
-     * IDybookDbSchemaMigrator implementation.
-     */
-    public class NullDybookDbSchemaMigrator : IDybookDbSchemaMigrator, ITransientDependency
+    public Task MigrateAsync()
     {
-        public Task MigrateAsync()
-        {
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

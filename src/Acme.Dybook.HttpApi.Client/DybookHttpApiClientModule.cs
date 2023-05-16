@@ -6,28 +6,33 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.SettingManagement;
+using Volo.Abp.VirtualFileSystem;
 
-namespace Acme.Dybook
+namespace Acme.Dybook;
+
+[DependsOn(
+    typeof(DybookApplicationContractsModule),
+    typeof(AbpAccountHttpApiClientModule),
+    typeof(AbpIdentityHttpApiClientModule),
+    typeof(AbpPermissionManagementHttpApiClientModule),
+    typeof(AbpTenantManagementHttpApiClientModule),
+    typeof(AbpFeatureManagementHttpApiClientModule),
+    typeof(AbpSettingManagementHttpApiClientModule)
+)]
+public class DybookHttpApiClientModule : AbpModule
 {
-    [DependsOn(
-        typeof(DybookApplicationContractsModule),
-        typeof(AbpAccountHttpApiClientModule),
-        typeof(AbpIdentityHttpApiClientModule),
-        typeof(AbpPermissionManagementHttpApiClientModule),
-        typeof(AbpTenantManagementHttpApiClientModule),
-        typeof(AbpFeatureManagementHttpApiClientModule),
-        typeof(AbpSettingManagementHttpApiClientModule)
-    )]
-    public class DybookHttpApiClientModule : AbpModule
-    {
-        public const string RemoteServiceName = "Default";
+    public const string RemoteServiceName = "Default";
 
-        public override void ConfigureServices(ServiceConfigurationContext context)
+    public override void ConfigureServices(ServiceConfigurationContext context)
+    {
+        context.Services.AddHttpClientProxies(
+            typeof(DybookApplicationContractsModule).Assembly,
+            RemoteServiceName
+        );
+
+        Configure<AbpVirtualFileSystemOptions>(options =>
         {
-            context.Services.AddHttpClientProxies(
-                typeof(DybookApplicationContractsModule).Assembly,
-                RemoteServiceName
-            );
-        }
+            options.FileSets.AddEmbedded<DybookHttpApiClientModule>();
+        });
     }
 }

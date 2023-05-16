@@ -6,42 +6,46 @@ using Microsoft.Extensions.Hosting;
 using Acme.Dybook.Data;
 using Serilog;
 using Volo.Abp;
+using Volo.Abp.Data;
 
-namespace Acme.Dybook.DbMigrator
+namespace Acme.Dybook.DbMigrator;
+
+public class DbMigratorHostedService : IHostedService
 {
-    public class DbMigratorHostedService : IHostedService
+    private readonly IHostApplicationLifetime _hostApplicationLifetime;
+    private readonly IConfiguration _configuration;
+
+    public DbMigratorHostedService(IHostApplicationLifetime hostApplicationLifetime, IConfiguration configuration)
     {
-        private readonly IHostApplicationLifetime _hostApplicationLifetime;
-        private readonly IConfiguration _configuration;
+        _hostApplicationLifetime = hostApplicationLifetime;
+        _configuration = configuration;
+    }
 
-        public DbMigratorHostedService(IHostApplicationLifetime hostApplicationLifetime, IConfiguration configuration)
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        using (var application = await AbpApplicationFactory.CreateAsync<DybookDbMigratorModule>(options =>
         {
-            _hostApplicationLifetime = hostApplicationLifetime;
-            _configuration = configuration;
-        }
-
-        public async Task StartAsync(CancellationToken cancellationToken)
+           options.Services.ReplaceConfiguration(_configuration);
+           options.UseAutofac();
+           options.Services.AddLogging(c => c.AddSerilog());
+           options.AddDataMigrationEnvironment();
+        }))
         {
-            using (var application = AbpApplicationFactory.Create<DybookDbMigratorModule>(options =>
-            {
-                options.Services.ReplaceConfiguration(_configuration);
-                options.UseAutofac();
-                options.Services.AddLogging(c => c.AddSerilog());
-            }))
-            {
-                application.Initialize();
+            await application.InitializeAsync();
 
-                await application
-                    .ServiceProvider
-                    .GetRequiredService<DybookDbMigrationService>()
-                    .MigrateAsync();
+            await application
+                .ServiceProvider
+                .GetRequiredService<DybookDbMigrationService>()
+                .MigrateAsync();
 
-                application.Shutdown();
+            await application.ShutdownAsync();
 
-                _hostApplicationLifetime.StopApplication();
-            }
+            _hostApplicationLifetime.StopApplication();
         }
+    }
 
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 }

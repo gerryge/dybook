@@ -1,7 +1,6 @@
-﻿namespace Acme.Dybook
+﻿namespace Acme.Dybook;
+
+public static class DybookDomainErrorCodes
 {
-    public static class DybookDomainErrorCodes
-    {
-        /* You can add your business exception error codes here, as constants */
-    }
+    /* You can add your business exception error codes here, as constants */
 }

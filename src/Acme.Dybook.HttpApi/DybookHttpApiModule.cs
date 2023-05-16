@@ -9,34 +9,33 @@ using Volo.Abp.PermissionManagement.HttpApi;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
 
-namespace Acme.Dybook
-{
-    [DependsOn(
-        typeof(DybookApplicationContractsModule),
-        typeof(AbpAccountHttpApiModule),
-        typeof(AbpIdentityHttpApiModule),
-        typeof(AbpPermissionManagementHttpApiModule),
-        typeof(AbpTenantManagementHttpApiModule),
-        typeof(AbpFeatureManagementHttpApiModule),
-        typeof(AbpSettingManagementHttpApiModule)
-        )]
-    public class DybookHttpApiModule : AbpModule
-    {
-        public override void ConfigureServices(ServiceConfigurationContext context)
-        {
-            ConfigureLocalization();
-        }
+namespace Acme.Dybook;
 
-        private void ConfigureLocalization()
+[DependsOn(
+    typeof(DybookApplicationContractsModule),
+    typeof(AbpAccountHttpApiModule),
+    typeof(AbpIdentityHttpApiModule),
+    typeof(AbpPermissionManagementHttpApiModule),
+    typeof(AbpTenantManagementHttpApiModule),
+    typeof(AbpFeatureManagementHttpApiModule),
+    typeof(AbpSettingManagementHttpApiModule)
+    )]
+public class DybookHttpApiModule : AbpModule
+{
+    public override void ConfigureServices(ServiceConfigurationContext context)
+    {
+        ConfigureLocalization();
+    }
+
+    private void ConfigureLocalization()
+    {
+        Configure<AbpLocalizationOptions>(options =>
         {
-            Configure<AbpLocalizationOptions>(options =>
-            {
-                options.Resources
-                    .Get<DybookResource>()
-                    .AddBaseTypes(
-                        typeof(AbpUiResource)
-                    );
-            });
-        }
+            options.Resources
+                .Get<DybookResource>()
+                .AddBaseTypes(
+                    typeof(AbpUiResource)
+                );
+        });
     }
 }

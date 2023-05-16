@@ -1,7 +1,6 @@
-﻿namespace Acme.Dybook
-{
-    public abstract class DybookDomainTestBase : DybookTestBase<DybookDomainTestModule> 
-    {
+﻿namespace Acme.Dybook;
 
-    }
+public abstract class DybookDomainTestBase : DybookTestBase<DybookDomainTestModule>
+{
+
 }

@@ -1,10 +1,9 @@
-﻿namespace Acme.Dybook.Web.Pages
+﻿namespace Acme.Dybook.Web.Pages;
+
+public class IndexModel : DybookPageModel
 {
-    public class IndexModel : DybookPageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-            
-        }
+
     }
 }
