@@ -2,7 +2,7 @@
 
 public static class DybookConsts
 {
-    public const string DbTablePrefix = "App";
+    public const string DbTablePrefix = "Dy";
 
     public const string DbSchema = null;
 }

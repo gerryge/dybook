@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Acme.Dybook.Users;
+using Microsoft.EntityFrameworkCore;
+using Volo.Abp;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -12,6 +15,7 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Volo.Abp.Users.EntityFrameworkCore;
 
 namespace Acme.Dybook.EntityFrameworkCore;
 
@@ -53,6 +57,8 @@ public class DybookDbContext :
 
     #endregion
 
+    public DbSet<DyUser> DyUsers { get; set; }
+    
     public DybookDbContext(DbContextOptions<DybookDbContext> options)
         : base(options)
     {
@@ -82,5 +88,20 @@ public class DybookDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        
+        builder.Entity<DyUser>(b =>
+        {
+            b.ToTable(DybookConsts.DbTablePrefix + "Users", DybookConsts.DbSchema);
+        
+            b.ConfigureByConvention();
+            b.ConfigureAbpUser();
+            
+            b.Property(u => u.SocialSecurityNumber).HasMaxLength(64).HasColumnName(nameof(DyUser.SocialSecurityNumber));
+        
+            b.HasIndex(x => new { x.TenantId, x.UserName });
+            b.HasIndex(x => new { x.TenantId, x.Email });
+        
+            b.ApplyObjectExtensionMappings();
+        });
     }
 }
