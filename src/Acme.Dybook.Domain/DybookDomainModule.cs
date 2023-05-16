@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Acme.Dybook.MultiTenancy;
+using Acme.Dybook.Users;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.Domain.Entities.Events.Distributed;
 using Volo.Abp.Emailing;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
@@ -39,7 +41,13 @@ public class DybookDomainModule : AbpModule
         {
             options.AddMaps<DybookDomainModule>();
         });
-        
+        // DyUserEto need configure and event transfer object
+        // Configure<AbpDistributedEntityEventOptions>(options =>
+        // {
+        //     options.AutoEventSelectors.Add<IdentityUser>();
+        //     options.EtoMappings.Add<IdentityUser, DyUserEto>(typeof(DybookDomainModule));
+        // });
+
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Languages.Add(new LanguageInfo("ar", "ar", "العربية", "ae"));
